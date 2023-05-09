@@ -1,0 +1,133 @@
+#include<stdio.h>
+#include<malloc.h>
+#define MAXSIZE 10
+struct node
+{
+int data;
+struct node *left;
+struct node *right;
+};
+struct queue
+{
+struct node *info[MAXSIZE];
+int front ,rear;
+};
+void initq(struct queue *pq)
+{
+pq->front=pq->rear=NULL;
+}
+void addq(struct queue *pq,struct node *treenode)
+{
+    pq->info[++pq->rear]=treenode;
+}
+struct node *removeq(struct queue *pq)
+{
+    return pq->info[++pq->front];
+}
+int isempty(struct queue *pq)
+{
+ return (pq->front==pq->rear);
+}
+int isfull(struct queue *pq)
+{
+
+    return (pq->rear==MAXSIZE-1);
+}
+main()
+{
+
+    int choice,n,m,pos,i,key;
+    struct node *root=NULL;
+    while(1)
+
+    {
+
+
+      printf("1.Insert Element\n");
+		printf("2.Level Order Traversal");
+		printf("3.Quit\n");
+		printf("Enter your choice : ");
+		scanf("%d",&choice);
+		switch(choice)
+        {
+		 case 1:
+			printf("How many nodes you want : ");
+			scanf("%d",&n);
+			for(i=0; i < n;i++)
+			{
+				printf("Enter the element : ");
+				scanf("%d",&m);
+				root=insertbst(root,m);
+			}
+			break;
+         case 2: levelorder(root);
+                 break;
+
+		 default:
+			printf("Wrong choice\n");
+		}/*End of switch*/
+	}/*End of while*/
+}/*End of main()*/
+insertbst(struct node *root,int num)
+{
+	struct node *temp,*newnode,*parent;
+	newnode= (struct node *)malloc(sizeof(struct node));
+	newnode->data = num;
+                newnode->left =newnode->right= NULL;
+
+	if(root==NULL)
+	{
+		root= newnode;
+     }
+     else
+     {
+
+     temp=root;
+	while(temp!=NULL)
+                {
+                    parent=temp;
+                    if(num<temp->data)
+                           temp=temp->left;
+                     else
+                            temp=temp->right;
+                }
+                if(num<parent->data)
+                     parent->left=newnode;
+                else
+                     parent->right=newnode;
+     }
+          return root;
+}
+    void levelorder(struct node *root)
+    {
+        int i,level=0;
+        struct node *temp,*marker=NULL;
+        struct queue q;
+        initq(&q);
+        addq(&q,root);
+        addq(&q,marker);
+        printf("\nLevel %d --->", level);
+        while(!isempty(&q))
+        {
+   temp=removeq(&q);
+   if (temp==marker)
+   {
+       level++;
+    if (!isempty(&q))
+    {
+        addq(&q,marker);
+        printf("\nLevel %d --->", level);
+
+    }
+   }
+   else
+   {
+      printf("%d\t",temp->data);
+      if (temp->left)
+       addq(&q,temp->left);
+      if (temp->right)
+        addq(&q,temp->right);
+   }
+}
+
+    }

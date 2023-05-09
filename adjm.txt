@@ -1,0 +1,58 @@
+#include<stdio.h>
+int main()
+{
+int i,j,m[10][10],n,v;
+printf("enter the no vertex\n");
+scanf("%d",&n);
+creatmat(m,n);
+displaymat(m,n);
+indeg(m,n);
+}
+void creatmat(int m[10][10],int n)
+{
+    int i,j;
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            m[10][10];
+            if(i!=j)
+            {
+                printf("is there edege between %d->%d(1/0)",i+1,j+1);
+                scanf("%d",&m[i][j]);
+            }
+        }
+    }
+}
+displaymat(int m[10][10],int n)
+{
+    int i,j;
+    printf("the adjancy matrix\n");
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+            printf("%5d",m[i][j]);
+
+        }
+        printf("\n");
+    }
+}
+void indeg(int m[10][10],int n)
+{
+    int i,j,sumin,sumout,total;
+    for(i=0;i<n;i++)
+    {
+        sumin=0;
+        sumout=0;
+        {
+            for(j=0;j<n;j++)
+            {
+                sumin=sumin+m[j][i];
+                sumout=sumout+m[i][j];
+            }
+            printf("vertex %d/t,indegree %d/t,outdegree %d/t,totaldegree%d/t",i+1,sumin,sumout,sumin+sumout);
+        }
+    }
+
+}

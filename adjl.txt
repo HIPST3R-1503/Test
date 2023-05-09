@@ -1,0 +1,97 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int vertex;
+    struct node *next;
+};
+struct node *list[10];
+main()
+{
+    int i,j,m[10][10],n,v;
+    printf("enter how mainy vertext\n");
+    scanf("%d",&n);
+    createmat(m,n);
+    createlist(m,n);
+    displaylist(m,n);
+    indg(m,n);
+    }
+void createmat(int m[10][10],int n)
+{
+    int i,j;
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+        {
+           m[i][j]=0;
+           if(i!=j)
+           {
+               printf("is there an edge between %d->%d(1/0)",i+1,j+1);
+               scanf("%d",&m[i][j]);
+           }
+
+        }
+    }
+}
+void createlist(int m[10][10],int n)
+{
+ int i,j;
+ struct node *temp,*newnode;
+ for(i=0;i<n;i++)
+ {
+     list[i]=NULL;
+     for(j=0;j<n;j++)
+     {
+         if(m[i][j]==1)
+         {
+             newnode=malloc(sizeof(struct node));
+             newnode->vertex=j+1;
+             newnode->next=NULL;
+             if(list[i]==NULL)
+                list[i]=temp=newnode;
+             else
+             {
+                 temp->next=newnode;
+                 temp=newnode;
+             }
+         }
+     }
+ }
+}
+void displaylist(int m[10][10],int n)
+{
+   struct node *temp;
+   int i,j;
+   printf("the adjacency list \n");
+   for(i=0;i<n;i++)
+   {
+       printf("\n v%d->",i+1);
+       temp=list[i];
+      while(temp)
+       {
+           printf("v%d->",temp->vertex);
+           temp=temp->next;
+       }
+       printf("NULL");
+   }
+
+}
+void indg(int m[10][10],int n)
+   {
+      int sumin,sumout,i,j,total;
+      for(i=0;i<n;i++)
+       {
+              sumin=0;
+              sumout=0;
+              for(j=0;j<n;j++)
+               {
+                   sumin=sumin+m[j][i];
+                   sumout=sumout+m[i][j];
+               }
+                printf("\nVertex %d\tIndegree%d\tOutdegree%d\tTotal Degree%d\n",i+1,sumin,sumout,sumin+sumout);
+
+        }
+
+
+    }
+
