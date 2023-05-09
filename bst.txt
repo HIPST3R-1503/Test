@@ -1,0 +1,195 @@
+#include<stdio.h>
+#include<malloc.h>
+struct node
+{
+ int data;
+ struct node *left;
+ struct node *right;
+};
+main()
+{
+int choice,n,m,i,pos,key,count,leaf;
+struct node *root=NULL,*root1,*addr;
+while(1)
+{
+  printf("1.insertbst \n");
+  printf("2.preorder \n");
+  printf("3.inorder \n");
+  printf("4.postorder\n");
+  printf("5.countnode \n");
+  printf("6.countleaf \n");
+  printf("7.search\n");
+  printf("8.treecopy \n");
+  printf("9.mirror \n");
+   printf("10.quit \n");
+   printf("enter ur choice\n");
+   scanf("%d",&choice);
+   switch(choice)
+   {
+     case 1: printf("enter how mainy nodes do u wants:");
+             scanf("%d",&n);
+             for(i=0;i<n;i++)
+             {
+               printf("enter ur data do u wants\n");
+               scanf("%d",&m);
+               root=insertbst(root,m);
+
+             }
+             break;
+    case 2:  preorder(root);
+             break;
+
+    case 3:  inorder(root);
+             break;
+    case 4:  postorder(root);
+             break;
+    case 5: count = countnode(root);
+             printf("the total nodes are %d",count);
+             break;
+    case 6: leaf = countleaf(root);
+             printf("the total nodes of leaf are %d",leaf);
+             break;
+    case 7: printf("Enter the key to be searched");
+                 scanf("%d",&key);
+                 addr=search(root,key);
+                 printf("Address=%u",addr);
+                 break;
+   case 8: root1=treecopy(root);
+                 break;
+  case 9:mirror(root);
+                 break;
+   default:
+			printf("Wrong choice\n");
+   }
+}
+
+}
+insertbst(struct node *root,int num)
+{
+    struct node *temp,*newnode,*parent;
+    newnode=(struct node*)malloc(sizeof(struct node));
+    newnode->data=num;
+    newnode->left=newnode->right=NULL;
+    if(root==NULL)
+    {
+     root=newnode;
+    }
+    else
+    {
+    temp=root;
+    while(temp!=NULL)
+    {
+     parent=temp;
+     if(num<temp->data)
+            temp=temp->left;
+     else
+        temp=temp->right;
+    }
+     if(num<parent->data)
+        parent->left=newnode;
+     else
+        parent->right=newnode;
+    }
+    return root;
+}
+void preorder(struct node *root)
+{
+    struct node *temp=root;
+    if(temp!=NULL)
+    {
+     printf("%d ",temp->data);
+     preorder(temp->left);
+     preorder(temp->right);
+    }
+}
+void inorder(struct node *root)
+{
+    struct node *temp=root;
+    if(temp!=NULL)
+    {
+     inorder(temp->left);
+     printf("%d",temp->data);
+     inorder(temp->right);
+    }
+}
+void postorder(struct node *root)
+{
+    struct node *temp=root;
+    if(temp!=NULL)
+    {
+     postorder(temp->left);
+     postorder(temp->right);
+     printf("%d",temp->data);
+    }
+}
+int countnode(struct node *root)
+{
+ static int count = 0;
+ struct node *temp = root;
+ if(temp!=NULL)
+ {
+  count++;
+  countnode(temp->left);
+  countnode(temp->right);
+ }
+ return count;
+}
+int countleaf(struct node *root)
+{
+ static int leaf= 0;
+ struct node *temp=root;
+if(temp!=NULL)
+ {
+  if((temp->left==NULL)&&(temp->right==NULL))
+     leaf++;
+  countleaf(temp->left);
+  countleaf(temp->right);
+
+ }
+ return leaf;
+}
+search(struct node *root,int key)
+{
+    struct node *temp=root;
+    while(temp!=NULL)
+    {
+        if(key==temp->data)
+            return temp;
+        if(key<temp->data)
+            temp=temp->left;
+        else
+            temp=temp->right;
+    }
+    return NULL;
+}
+treecopy(struct node *root)
+{
+ struct node *newnode;
+ if(root!=NULL)
+ {
+   newnode=malloc(sizeof(struct node));
+   newnode->data=root->data;
+   newnode->left=treecopy(root->left);
+   newnode->right=treecopy(root->right);
+    return (newnode);
+ }
+ else
+    return NULL;
+
+}
+void mirror(struct node *root)
+{
+  struct node *temp,*temp1;
+  temp=root;
+  if(temp!=NULL)
+  {
+      if(temp->left!=NULL)
+        mirror(temp->left);
+      if(temp->right!=NULL)
+        mirror(temp->right);
+      temp1=temp->left;
+      temp->left=temp->right;
+      temp->right=temp1;
+  }
+
+}
